@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Can not be run as part of CI/CD pipeline because this script must be run with priviliges to create the SP and give it the necessary roles.
 # Should be run once in order to enable the automatic pipeline runs via Github actions or other CI/CD service providers.
-source ./sh_scripts/variables.sh
+source ./sh_scripts/variables.sh $1
 
 echo Creating service principal $DATABRICKS_TF_SP_NAME...
 RESPONSE=$(az ad sp create-for-rbac --name $DATABRICKS_TF_SP_NAME --role reader --scopes /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$TF_RESOURCE_GROUP_NAME)

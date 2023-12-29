@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source ./sh_scripts/variables.sh
+source ./sh_scripts/variables.sh $1
 
 DB_HOST_NAME=$(az keyvault secret show --name DBHostname --vault-name $TF_KEYVAULT_NAME --query value -o tsv)
 WORKSPACE_TOKEN_ENDPOINT="$DB_HOST_NAME/oidc/v1/token"

@@ -50,25 +50,38 @@ jobs:
     #   shell: bash
 
     - name: Init & Import
-      run: ./sh_scripts/4imports_terraform.sh
+      run: ./sh_scripts/4init_terraform.sh dev
       continue-on-error: true
-      shell: bash
-    
-    - name: Validation step
-      if: always()
-      run: ./sh_scripts/5validate_terraform.sh
-      shell: bash
-      env:
-        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-
-    - name: Deployment step
-      if: always()
-      run: ./sh_scripts/6deploy_terraform.sh
       shell: bash
       env:
         ARM_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.DATABRICKS_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID }}
+        ARM_ACCESS_KEY: ${{ secrets.AZURE_ARM_ACCESS_KEY }}
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        ARM_USE_OIDC: true
+    
+    - name: Validation step
+      if: always()
+      run: ./sh_scripts/5validate_terraform.sh dev
+      shell: bash
+      env:
+        ARM_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.DATABRICKS_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID }}
+        ARM_ACCESS_KEY: ${{ secrets.AZURE_ARM_ACCESS_KEY }}
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        ARM_USE_OIDC: true
+
+    - name: Deployment step
+      if: always()
+      run: ./sh_scripts/6deploy_terraform.sh dev
+      shell: bash
+      env:
+        ARM_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.DATABRICKS_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID }}
+        ARM_ACCESS_KEY: ${{ secrets.AZURE_ARM_ACCESS_KEY }}
         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
         ARM_USE_OIDC: true
 

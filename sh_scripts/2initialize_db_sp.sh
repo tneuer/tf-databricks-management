@@ -9,9 +9,22 @@ echo Creating service principal $DATABRICKS_TF_SP_NAME...
 RESPONSE=$(az ad sp create-for-rbac --name $DATABRICKS_TF_SP_NAME --role reader --scopes /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$TF_RESOURCE_GROUP_NAME)
 APP_ID=$(echo $RESPONSE | jq '.appId' | tr -d '"')
 PASSWORD=$(echo $RESPONSE | jq '.password' | tr -d '"')
+
+# Create github configs
+mkdir configs
+echo '{
+    "name": "'$GITHUB_OICD_CREDENTIALS_NAME'",
+    "issuer": "https://token.actions.githubusercontent.com",
+    "subject": "'repo:$GIT_ROOT/$TF_REPO:ref:refs/heads/main'",
+    "description": "Federated identity for push to main branch.",
+    "audiences": [
+        "api://AzureADTokenExchange"
+    ]
+}' > ./configs/$GITHUB_OICD_CREDENTIALS_NAME.json
+
 az keyvault secret set --name $DATABRICKS_TF_SP_NAME'AppID' --vault-name $TF_KEYVAULT_NAME --value $APP_ID
 az keyvault secret set --name $DATABRICKS_TF_SP_NAME'Password' --vault-name $TF_KEYVAULT_NAME --value $PASSWORD
-az ad app federated-credential create --id  $APP_ID --parameters ./configs/github_oicd_credential.json
+az ad app federated-credential create --id  $APP_ID --parameters ./configs/$GITHUB_OICD_CREDENTIALS_NAME.json
 
 # Role assignments
 echo Configure Service Principal role assignments

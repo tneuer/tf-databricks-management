@@ -34,8 +34,15 @@ variable "key_vault_name" {
 }
 
 # DB WORKSPACE
+variable "db_workspace_name" {
+  type = string
+}
 
 variable "db_storage_account_name" {
+  type = string
+}
+
+variable "db_metastore_container_name" {
   type = string
 }
 

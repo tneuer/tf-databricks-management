@@ -3,7 +3,7 @@ data "azurerm_resource_group" "rg" {
 }
 
 data "azurerm_databricks_workspace" "db_workspace1" {
-  name                = format("%s%s", "db-workspace-", var.project)
+  name                = var.db_workspace_name
   resource_group_name = var.rg_name
 }
 
@@ -13,7 +13,7 @@ data "azurerm_storage_account" "db_metastore" {
 }
 
 data "azurerm_storage_container" "db_metastore" {
-  name                 = "my-metastore"
+  name                 = var.db_metastore_container_name
   storage_account_name = data.azurerm_storage_account.db_metastore.name
 }
 

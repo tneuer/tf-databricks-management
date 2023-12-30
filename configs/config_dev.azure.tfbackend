@@ -1,5 +1,4 @@
-resource_group_name = "terraform-databricks-rg"
-storage_account_name = "tfstatefilestoragetn"
-container_name = "tfstatefiledbmanagement"
+resource_group_name = "terraform-databricks-rg-dev"
+storage_account_name = "tfstatefilestoragetndev"
+container_name = "tfstatefiledbmanagementdev"
 key = "db_management_dev.tfstate"
-use_oidc = true
